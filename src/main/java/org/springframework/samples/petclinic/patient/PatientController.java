@@ -23,8 +23,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Juergen Hoeller
@@ -51,6 +53,19 @@ class PatientController {
 		return addPaginationModel(page, paginated, model);
 
 	}
+        	/**
+	 * Custom handler for displaying an owner.
+	 * @param ownerId the ID of the owner to display
+	 * @return a ModelMap with the model attributes for the view
+	 */
+	@GetMapping("/patients/{patientId}")
+	public ModelAndView showOwner(@PathVariable("patientId") int patientId) {
+		ModelAndView mav = new ModelAndView("patients/patientDetails");
+		Patient patient = this.patients.findById(patientId);
+		mav.addObject(patient);
+		return mav;
+	}
+        
 
 	private String addPaginationModel(int page, Page<Patient> paginated, Model model) {
 		List<Patient> listPhysicians = paginated.getContent();
