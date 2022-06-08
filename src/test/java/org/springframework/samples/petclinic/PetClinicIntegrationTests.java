@@ -27,8 +27,8 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.samples.petclinic.physician.PhysicianRepository;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class PetClinicIntegrationTests {
@@ -37,21 +37,21 @@ class PetClinicIntegrationTests {
 	int port;
 
 	@Autowired
-	private VetRepository vets;
+	private PhysicianRepository physicians;
 
 	@Autowired
 	private RestTemplateBuilder builder;
 
 	@Test
 	void testFindAll() throws Exception {
-		vets.findAll();
-		vets.findAll(); // served from cache
+		physicians.findAll();
+		physicians.findAll(); // served from cache
 	}
 
 	@Test
 	void testOwnerDetails() {
 		RestTemplate template = builder.rootUri("http://localhost:" + port).build();
-		ResponseEntity<String> result = template.exchange(RequestEntity.get("/owners/1").build(), String.class);
+		ResponseEntity<String> result = template.exchange(RequestEntity.get("/patients/1").build(), String.class);
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
